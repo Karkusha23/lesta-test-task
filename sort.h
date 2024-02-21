@@ -1,23 +1,53 @@
-#pragma once
+п»ї#pragma once
 #include <iostream>
 
-// Поразрядная сортировка
+// РџРѕСЂР°Р·СЂСЏРґРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР°
 
-// Количество итераций в поразрядной сортировке. Должно быть степенью числа 2
+// РљРѕР»РёС‡РµСЃС‚РІРѕ РёС‚РµСЂР°С†РёР№ РІ РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ. Р”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ СЃС‚РµРїРµРЅСЊСЋ С‡РёСЃР»Р° 2
 const int RADIXSORT_ITERATIONS = 4;
 
-// Количество бит, по которым на каждой итерации поразрядной сортировки формируются корзины 
+// РљРѕР»РёС‡РµСЃС‚РІРѕ Р±РёС‚, РїРѕ РєРѕС‚РѕСЂС‹Рј РЅР° РєР°Р¶РґРѕР№ РёС‚РµСЂР°С†РёРё РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё С„РѕСЂРјРёСЂСѓСЋС‚СЃСЏ РєРѕСЂР·РёРЅС‹ 
 const int RADIXSORT_BITBLOCK = sizeof(int) * 8 / RADIXSORT_ITERATIONS;
 
-// Количество корзин в поразрядной сортировке
+// РљРѕР»РёС‡РµСЃС‚РІРѕ РєРѕСЂР·РёРЅ РІ РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ
 const int RADIXSORT_BASKETCOUNT = 1 << RADIXSORT_BITBLOCK;
 
-// Маска для чисел в поразрядной сортировке
+// РњР°СЃРєР° РґР»СЏ С‡РёСЃРµР» РІ РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ
 const int RADIXSORT_MASK = (1 << RADIXSORT_BITBLOCK) - 1;
+
+bool is_sorted(int* arr, int size)
+{
+	for (int i = 0; i < size - 1; ++i)
+	{
+		if (arr[i] > arr[i + 1])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 
 void radix_sort(int*& arr, int size)
 {
-	int baskets[RADIXSORT_BASKETCOUNT];
+	if (is_sorted(arr, size))
+	{
+		return;
+	}
+
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ РёС‚РµСЂР°С†РёР№ РІ РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ. Р”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ СЃС‚РµРїРµРЅСЊСЋ С‡РёСЃР»Р° 2
+	int RADIXSORT_ITERATIONS = size < 50000 ? 4 : 2;
+
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ Р±РёС‚, РїРѕ РєРѕС‚РѕСЂС‹Рј РЅР° РєР°Р¶РґРѕР№ РёС‚РµСЂР°С†РёРё РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё С„РѕСЂРјРёСЂСѓСЋС‚СЃСЏ РєРѕСЂР·РёРЅС‹ 
+	int RADIXSORT_BITBLOCK = sizeof(int) * 8 / RADIXSORT_ITERATIONS;
+
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ РєРѕСЂР·РёРЅ РІ РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ
+	int RADIXSORT_BASKETCOUNT = 1 << RADIXSORT_BITBLOCK;
+
+	// РњР°СЃРєР° РґР»СЏ С‡РёСЃРµР» РІ РїРѕСЂР°Р·СЂСЏРґРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ
+	int RADIXSORT_MASK = (1 << RADIXSORT_BITBLOCK) - 1;
+
+	int* baskets = new int[RADIXSORT_BASKETCOUNT];
 
 	int* arr2 = new int[size];
 
@@ -49,5 +79,6 @@ void radix_sort(int*& arr, int size)
 		std::swap(arr, arr2);
 	}
 
+	delete[] baskets;
 	delete[] arr2;
 }
