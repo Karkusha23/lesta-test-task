@@ -3,18 +3,6 @@
 
 // Поразрядная сортировка
 
-// Количество итераций в поразрядной сортировке. Должно быть степенью числа 2
-const int RADIXSORT_ITERATIONS = 4;
-
-// Количество бит, по которым на каждой итерации поразрядной сортировки формируются корзины 
-const int RADIXSORT_BITBLOCK = sizeof(int) * 8 / RADIXSORT_ITERATIONS;
-
-// Количество корзин в поразрядной сортировке
-const int RADIXSORT_BASKETCOUNT = 1 << RADIXSORT_BITBLOCK;
-
-// Маска для чисел в поразрядной сортировке
-const int RADIXSORT_MASK = (1 << RADIXSORT_BITBLOCK) - 1;
-
 bool is_sorted(int* arr, int size)
 {
 	for (int i = 0; i < size - 1; ++i)
